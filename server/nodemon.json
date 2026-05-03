@@ -1,0 +1,7 @@
+{
+  "watch": [
+    "src"
+  ],
+  "ext": "ts",
+  "exec": "npm run build:cjs && node -r dotenv/config ./dest/cjs/server.js"
+}

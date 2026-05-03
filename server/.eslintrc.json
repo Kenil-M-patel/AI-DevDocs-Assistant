@@ -1,0 +1,33 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "prettier"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module",
+    "project": ["./tsconfig.json"] // Path to your TypeScript configuration file
+  },
+  "rules": {
+    "prettier/prettier": "error", // Enforce Prettier formatting
+    "@typescript-eslint/explicit-module-boundary-types": "off", // Optional for flexibility
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ], // Allow unused variables starting with _
+    "@typescript-eslint/no-explicit-any": "warn", // Encourage type safety, but allow with warnings
+    "no-console": "warn" // Discourage console.log in production, but allow with warnings
+  },
+  "env": {
+    "node": true,
+    "jest": true // Add if using Jest for testing
+  },
+  "ignorePatterns": ["dest/", "tools/"]
+}

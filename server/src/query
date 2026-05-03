@@ -1,0 +1,314 @@
+-- public."admin" definition
+
+-- Drop table
+
+-- DROP TABLE public."admin";
+
+CREATE TABLE public."admin" (
+	id serial4 NOT NULL,
+	"name" varchar(255) NOT NULL,
+	email varchar(50) NOT NULL,
+	"password" varchar(100) NOT NULL,
+	last_login date NULL,
+	"createdAt" timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	"updatedAt" timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	"role" varchar(50) DEFAULT 'admin'::character varying NOT NULL,
+	CONSTRAINT admin_pkey PRIMARY KEY (id)
+);
+
+
+-- public.otp definition
+
+-- Drop table
+
+-- DROP TABLE public.otp;
+
+CREATE TABLE public.otp (
+	id serial4 NOT NULL,
+	email varchar NOT NULL,
+	otp varchar(50) NULL,
+	"type" varchar(30) NULL,
+	CONSTRAINT otp_pkey PRIMARY KEY (id),
+	CONSTRAINT otp_type_check CHECK (((type)::text = ANY ((ARRAY['login'::character varying, 'register'::character varying, 'admin_password'::character varying, 'forgot_password'::character varying])::text[])))
+);
+
+-- public.contact_us definition
+ 
+-- Drop table
+ 
+-- DROP TABLE public.contact_us;
+ 
+CREATE TABLE public.contact_us (
+	id serial4 NOT NULL,
+	first_name varchar(255) NOT NULL,
+	last_name varchar(255) NOT NULL,
+	email varchar(255) NOT NULL,
+	message text NOT NULL,
+	phone_number int8 NULL,
+	created_at timestamptz DEFAULT now() NOT NULL,
+	updated_at timestamptz DEFAULT now() NOT NULL,
+	CONSTRAINT contact_us_pkey PRIMARY KEY (id)
+);
+
+-- public."subscription" definition
+ 
+-- Drop table
+ 
+-- DROP TABLE public."subscription";
+ 
+CREATE TABLE public."subscription" (
+
+	id serial4 NOT NULL,
+
+	email varchar(255) NOT NULL,
+
+	created_at timestamptz DEFAULT now() NOT NULL,
+
+	updated_at timestamptz DEFAULT now() NOT NULL,
+
+	CONSTRAINT subscription_email_key UNIQUE (email),
+
+	CONSTRAINT subscription_pkey PRIMARY KEY (id)
+
+);
+ 
+
+ -- public.faq definition
+
+-- Drop table
+
+-- DROP TABLE public.faq;
+
+CREATE TABLE public.faq (
+	id serial4 NOT NULL,
+	question varchar(255) NOT NULL,
+	answer text NOT NULL,
+	"type" varchar(20) NOT NULL,
+	created_at timestamptz DEFAULT now() NOT NULL,
+	updated_at timestamptz DEFAULT now() NOT NULL,
+	CONSTRAINT faq_pkey PRIMARY KEY (id),
+	CONSTRAINT faq_type_check CHECK (((type)::text = ANY ((ARRAY['general'::character varying, 'meal'::character varying])::text[])))
+);
+
+-- public.testimonial definition
+
+-- Drop table
+
+-- DROP TABLE public.testimonial;
+
+CREATE TABLE public.testimonial (
+	id serial4 NOT NULL,
+	"name" varchar(255) NOT NULL,
+	profile_picture varchar(255) NOT NULL,
+	message text NOT NULL,
+	plan_name varchar(255) NOT NULL,
+	created_at timestamp DEFAULT now() NOT NULL,
+	updated_at timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT testimonial_pkey PRIMARY KEY (id)
+);
+
+-- public.legal_content definition
+
+-- Drop table
+
+-- DROP TABLE public.legal_content;
+
+CREATE TABLE public.legal_content (
+	id serial4 NOT NULL,
+	"type" varchar(32) NOT NULL,
+	"content" text NULL,
+	last_updated timestamp NULL,
+	created_at timestamp DEFAULT now() NOT NULL,
+	updated_at timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT legal_content_pkey PRIMARY KEY (id),
+	CONSTRAINT legal_content_type_check CHECK (((type)::text = ANY ((ARRAY['terms_and_conditions'::character varying, 'privacy_policy'::character varying, 'cookies'::character varying])::text[])))
+);
+
+-- public.blog_category definition
+
+-- Drop table
+
+-- DROP TABLE public.blog_category;
+
+CREATE TABLE public.blog_category (
+	id serial4 NOT NULL,
+	icon varchar(255) NOT NULL,
+	blog_category_name varchar(255) NOT NULL,
+	blog_category_slug varchar(255) NOT NULL,
+	created_at timestamptz DEFAULT now() NOT NULL,
+	updated_at timestamptz DEFAULT now() NOT NULL,
+	CONSTRAINT blog_category_blog_category_slug_key UNIQUE (blog_category_slug),
+	CONSTRAINT blog_category_pkey PRIMARY KEY (id)
+);
+
+-- public.blog definition
+
+-- Drop table
+
+-- DROP TABLE public.blog;
+
+CREATE TABLE public.blog (
+	id serial4 NOT NULL,
+	category_id int4 NOT NULL,
+	blog_title varchar(255) NOT NULL,
+	blog_banner_image varchar(255) NOT NULL,
+	"content" text NOT NULL,
+	tags text NOT NULL,
+	blog_title_slug varchar(255) NOT NULL,
+	min_read int4 NOT NULL,
+	created_at timestamptz DEFAULT now() NOT NULL,
+	updated_at timestamptz DEFAULT now() NOT NULL,
+	CONSTRAINT blog_blog_title_slug_key UNIQUE (blog_title_slug),
+	CONSTRAINT blog_pkey PRIMARY KEY (id)
+);
+
+-- public.kitchen definition
+
+-- Drop table
+
+-- DROP TABLE public.kitchen;
+-- public.kitchen definition
+
+-- Drop table
+
+-- DROP TABLE public.kitchen;
+
+CREATE TABLE public.kitchen (
+	id serial4 NOT NULL,
+	"name" varchar(255) NOT NULL,
+	image varchar(255) NULL,
+	email varchar(255) NOT NULL,
+	status varchar(10) DEFAULT 'active'::character varying NOT NULL,
+	phone_number varchar(255) NOT NULL,
+	address1 varchar(255) NOT NULL,
+	address2 varchar(255) NULL,
+	country varchar(255) NOT NULL,
+	state varchar(255) NOT NULL,
+	city varchar(255) NOT NULL,
+	pincode varchar(255) NOT NULL,
+	created_at timestamptz DEFAULT now() NOT NULL,
+	updated_at timestamptz DEFAULT now() NOT NULL,
+	CONSTRAINT kitchen_email_key UNIQUE (email),
+	CONSTRAINT kitchen_pkey PRIMARY KEY (id),
+	CONSTRAINT kitchen_status_check CHECK (((status)::text = ANY ((ARRAY['active'::character varying, 'inactive'::character varying, 'deleted'::character varying])::text[])))
+);
+
+-- public."role" definition
+
+-- Drop table
+
+-- DROP TABLE public."role";
+
+CREATE TABLE public."role" (
+	id serial4 NOT NULL,
+	"name" varchar(255) NOT NULL,
+	status varchar(10) DEFAULT 'active'::character varying NOT NULL,
+	"permission" jsonb DEFAULT '[]'::jsonb NOT NULL,
+	created_at timestamptz DEFAULT now() NOT NULL,
+	updated_at timestamptz DEFAULT now() NOT NULL,
+	CONSTRAINT role_pkey PRIMARY KEY (id),
+	CONSTRAINT role_status_check CHECK (((status)::text = ANY ((ARRAY['active'::character varying, 'inactive'::character varying])::text[])))
+);
+
+-- public."permission" definition
+
+-- Drop table
+
+-- DROP TABLE public."permission";
+
+CREATE TABLE public."permission" (
+	id serial4 NOT NULL,
+	"name" varchar(255) NOT NULL,
+	status varchar(10) DEFAULT 'active'::character varying NOT NULL,
+	created_at timestamptz DEFAULT now() NOT NULL,
+	updated_at timestamptz DEFAULT now() NOT NULL,
+	CONSTRAINT permission_pkey PRIMARY KEY (id),
+	CONSTRAINT permission_status_check CHECK (((status)::text = ANY ((ARRAY['active'::character varying, 'inactive'::character varying])::text[])))
+);
+
+-- public."user" definition
+
+-- Drop table
+
+-- DROP TABLE public."user";
+
+CREATE TABLE public."user" (
+	id serial4 NOT NULL,
+	first_name varchar(255) NOT NULL,
+	last_name varchar(255) NOT NULL,
+	email varchar(255) NOT NULL,
+	phone_number int8 NOT NULL,
+	"password" varchar(100) NULL,
+	"type" varchar(20) NOT NULL,
+	role_id int4 NULL,
+	CONSTRAINT user_email_key UNIQUE (email),
+	CONSTRAINT user_pkey PRIMARY KEY (id),
+	CONSTRAINT user_type_check CHECK (((type)::text = ANY ((ARRAY['customer'::character varying, 'kitchen'::character varying, 'sub_admin'::character varying])::text[])))
+);
+
+
+-- public."user" foreign keys
+
+ALTER TABLE public."user" ADD CONSTRAINT user_role_id_fkey FOREIGN KEY (role_id) REFERENCES public."role"(id) ON DELETE SET NULL ON UPDATE CASCADE;
+
+
+
+
+-- plan
+CREATE TABLE plan (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
+  image TEXT,
+
+  pricing_breakfast NUMERIC(10,2) NOT NULL CHECK (pricing_breakfast >= 0),
+  pricing_lunch NUMERIC(10,2) NOT NULL CHECK (pricing_lunch >= 0),
+  pricing_dinner NUMERIC(10,2) NOT NULL CHECK (pricing_dinner >= 0),
+
+  allowed_durations JSONB NOT NULL,
+
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+
+-- plan mealbox
+
+CREATE TABLE plan_meal_box (
+  id SERIAL PRIMARY KEY,
+
+  plan_id INTEGER NOT NULL
+    REFERENCES plan(id)
+    ON DELETE CASCADE,
+
+  meal_box_id INTEGER NOT NULL
+    REFERENCES meal_box(id)
+    ON DELETE RESTRICT,
+
+  slot VARCHAR(10) NOT NULL
+    CHECK (slot IN ('breakfast','lunch','dinner')),
+
+  created_at TIMESTAMP DEFAULT NOW(),
+
+  UNIQUE (plan_id, meal_box_id, slot)
+);
+
+
+-- plan meal item
+
+CREATE TABLE plan_meal_box_item (
+  id SERIAL PRIMARY KEY,
+
+  plan_meal_box_id INTEGER NOT NULL
+    REFERENCES plan_meal_box(id)
+    ON DELETE CASCADE,
+
+  meal_item_id INTEGER NOT NULL
+    REFERENCES meal_item(id)
+    ON DELETE RESTRICT,
+
+  quantity NUMERIC(10,2) NOT NULL
+    CHECK (quantity > 0),
+
+  UNIQUE (plan_meal_box_id, meal_item_id)
+);

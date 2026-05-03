@@ -1,0 +1,9 @@
+import config from './config';
+
+export default {
+  DATABASE_HOST: config.DATABASE_HOST,
+  DATABASE_USERNAME: config.DATABASE_USERNAME,
+  DATABASE_PASSWORD: config.DATABASE_PASSWORD,
+  DATABASE_NAME: config.DATABASE_NAME,
+  DATABASE_NAME_TEST: config.DATABASE_NAME_TEST,
+};

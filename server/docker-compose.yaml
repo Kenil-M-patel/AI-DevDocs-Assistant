@@ -1,0 +1,47 @@
+services:
+  redis:
+    image: redis:latest
+    container_name: rag-redis
+    ports:
+      - "6379:6379"
+
+  postgres:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: app_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - rag_postgres_v2:/var/lib/postgresql/data
+
+  postgres_vector:
+    image: pgvector/pgvector:pg15
+    container_name: pgvector-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: vector_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - rag_vector_v3:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: rag-chatbot
+    env_file: .env
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./uploads:/app/uploads
+    depends_on:
+      - postgres
+      - postgres_vector
+      - redis
+
+volumes:
+  rag_postgres_v2:
+  rag_vector_v3:
